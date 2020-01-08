@@ -32,3 +32,8 @@ For the payee, they can at any time submit one of these signed numbers and recie
  * To prevent the payee from broadcasting, per say, ```5, [signature]``` twice, the contract internally stores and subtracts the payment automatically.
 
 * The owner could technically just set the payment interval to something smaller than previously agreed to, this is another problem that needs to be fixed. Maybe through a multi-sig method.
+
+# Todo
+* Reduce gas usage
+* Use more safer programming practices
+* Implement multi-sig on updatePayAmount

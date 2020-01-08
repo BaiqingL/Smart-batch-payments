@@ -8,25 +8,27 @@ A simple payment channel that supports multiple deposits, extend contract time a
 For the payee, they can at any time submit one of these signed numbers and recieve pay, the pay interval is also recorded on the contract to prevent multiple pays.
 
 # Functions deepdive
-* (fallback) payment
+* (fallback) payment [Anyone]
   * This function is the deposit, anyone can deposit into the contract, however only the owner (employer) and the payee can extract value
-* _balanceOfContract
+* _balanceOfContract [Anyone]
   * This variable allows monitoring of contract balance
-* contractTime
+* contractTime [Anyone]
   * This variable shows when the contract expires, after contract expires the owner can retrieve all funds locked within the contract
-* payAmount
+* payAmount [Anyone]
   * This variable is the pay intervals, the amount being paid per increment
-* extendContract
+* extendContract [Owner]
   * The owner can choose to extend the contract to continue the payment channel
-* payDay
+* payDay [Payee]
   * This function can be invoked by the payee, it will take the owner's signed payment agreement and process it accordingly
-* returnToOwner
+* returnToOwner [Owner after contractTime expires]
   * This function will return all funds to the owner of the contract if the contract has expired
-* setPayee
+* setPayee [Owner]
   * This function allows the owner to set who is the payee of the contract
-* updatePayAmount
+* updatePayAmount [Owner]
   * This function allows the owner to update how much pay each payment interval represents
 
 # Notes
 * All signed numbers could be done offline, and the payee can then just broadcast the number included with the signature to recieve payments.
  * To prevent the payee from broadcasting, per say, ```5, [signature]``` twice, the contract internally stores and subtracts the payment automatically.
+
+* The owner could technically just set the payment interval to something smaller than previously agreed to, this is another problem that needs to be fixed. Maybe through a multi-sig method.

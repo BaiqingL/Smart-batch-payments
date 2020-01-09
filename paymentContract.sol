@@ -10,19 +10,17 @@ contract paymentChannel{
     uint256 amountToPay;
     uint256 amountPaid;
     uint256 public payAmount;
-    uint256 public _balanceOfContract;
     
     constructor() public {
         owner = msg.sender;
         amountPaid = 0;
-        _balanceOfContract = 0;
         payAmount = 10000000000000000; // 0.01 ETH per payment interval
         contractTime = uint64(block.timestamp) + 31556926;
     }
     
-    fallback() payable external {
-        _balanceOfContract += msg.value;
-    }
+    receive() external payable {}
+    
+    fallback() external payable{}
     
     modifier onlyOwner {
         require(msg.sender == owner);
@@ -37,6 +35,10 @@ contract paymentChannel{
     modifier expiredContract {
         require(block.timestamp >= contractTime);
         _;
+    }
+    
+    function getBalance() public view returns(uint256){
+        return address(this).balance;
     }
     
     function setPayee(
@@ -59,7 +61,6 @@ contract paymentChannel{
         require (ecverify(pay, sig) == true);
         amountToPay = pay * payAmount - amountPaid;
         payee.transfer(amountToPay);
-        _balanceOfContract -= amountToPay;
         amountPaid += amountToPay;
     }
 
@@ -72,7 +73,7 @@ contract paymentChannel{
     }
     
     function returnToOwner() public payable onlyOwner expiredContract {
-        owner.transfer(_balanceOfContract);
+        owner.transfer(address(this).balance);
     }
 
     function ecrecovery(

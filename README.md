@@ -10,14 +10,14 @@ https://ropsten.etherscan.io/address/0xa1cfe0c85d7e89221d1b870de107ba15cd3d9c11
 For the payee, they can at any time submit one of these signed numbers and recieve pay, the pay interval is also recorded on the contract to prevent multiple pays.
 
 # Functions deepdive
-* (fallback) payment [Anyone]
+* (recieve / fallback) payment [Anyone]
   * This function is the deposit, anyone can deposit into the contract, however only the owner (employer) and the payee can extract value
-* _balanceOfContract [Anyone]
-  * This variable allows monitoring of contract balance
 * contractTime [Anyone]
   * This variable shows when the contract expires, after contract expires the owner can retrieve all funds locked within the contract
 * payAmount [Anyone]
   * This variable is the pay intervals, the amount being paid per increment
+* getBalance [Anyone]
+  * Get the balance of the contract
 * extendContract [Owner]
   * The owner can choose to extend the contract to continue the payment channel
 * payDay [Payee]

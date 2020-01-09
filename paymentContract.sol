@@ -16,7 +16,7 @@ contract paymentChannel{
         owner = msg.sender;
         amountPaid = 0;
         _balanceOfContract = 0;
-        payAmount = 250000000000000000;
+        payAmount = 10000000000000000; // 0.01 ETH per payment interval
         contractTime = uint64(block.timestamp) + 31556926;
     }
     
@@ -63,7 +63,7 @@ contract paymentChannel{
         amountPaid += amountToPay;
     }
 
-    function updatePayAmount(uint32 pay) public onlyOwner {
+    function updatePayAmount(uint256 pay) public onlyOwner {
         payAmount = pay;
     }
     

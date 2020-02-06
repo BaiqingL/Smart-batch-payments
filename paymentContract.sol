@@ -1,4 +1,4 @@
-pragma solidity ^0.6.1;
+pragma solidity ^0.6.2;
 
 // Cryptographic features taken from OpenZepplin libraries and modified to fit contract
 
@@ -37,6 +37,12 @@ contract paymentChannel{
         _;
     }
     
+    function safeAdd(uint64 a, uint64 b) internal pure returns (uint64) {
+        uint64 c = a + b;
+        require(c >= a, "SafeMath: addition overflow");
+        return c;
+    }
+    
     function getBalance() public view returns(uint256){
         return address(this).balance;
     }
@@ -69,7 +75,7 @@ contract paymentChannel{
     }
     
     function extendContract(uint64 timeToAdd) public onlyOwner {
-        contractTime += timeToAdd;
+        contractTime = safeAdd(contractTime, timeToAdd);
     }
     
     function returnToOwner() public payable onlyOwner expiredContract {

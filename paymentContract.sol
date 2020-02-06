@@ -22,9 +22,15 @@ contract paymentChannel{
         contractTime = uint64(block.timestamp) + 31556926;
     }
     
-    receive() external payable {}
+    receive() 
+        external
+        payable
+    {}
     
-    fallback() external payable{}
+    fallback() 
+        external
+        payable
+    {}
     
     modifier onlyOwner {
         require(msg.sender == owner);

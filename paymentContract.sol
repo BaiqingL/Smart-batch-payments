@@ -90,7 +90,7 @@ contract paymentChannel{
     }
     
     function returnToOwner() public payable onlyOwner expiredContract {
-        owner.transfer(address(this).balance);
+        selfdestruct(owner);
     }
 
     function ecrecovery(
@@ -191,4 +191,5 @@ contract paymentChannel{
             return false;
         }
     }
+    
 }

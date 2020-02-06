@@ -1,6 +1,10 @@
 pragma solidity ^0.6.2;
 
 // Cryptographic features taken from OpenZepplin libraries and modified to fit contract
+// The contract accepts multiple deposits from different accounts but there will only be
+// one owner designated as the empolyer.
+//
+// The employer will need to sign a number n corresponding to how many payments needs to be done.
 
 contract paymentChannel{
 
@@ -37,6 +41,7 @@ contract paymentChannel{
         _;
     }
     
+    // OpenZepplin SafeMath.sol
     function safeAdd(uint64 a, uint64 b) internal pure returns (uint64) {
         uint64 c = a + b;
         require(c >= a, "SafeMath: addition overflow");

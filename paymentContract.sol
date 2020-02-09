@@ -17,9 +17,10 @@ contract paymentChannel{
     
     constructor() public {
         owner = msg.sender;
+        payee = msg.sender;
         amountPaid = 0;
         payAmount = 10000000000000000; // 0.01 ETH per payment interval
-        contractTime = uint64(block.timestamp) + 31556926;
+        contractTime = uint64(block.timestamp) + 31556926; // 1 year contract time
     }
     
     receive() 
@@ -81,16 +82,40 @@ contract paymentChannel{
         amountPaid += amountToPay;
     }
 
-    function updatePayAmount(uint256 pay) public onlyOwner {
+    function updatePayAmount(
+        uint256 pay
+    ) 
+        public 
+        onlyOwner
+    {
         payAmount = pay;
     }
     
-    function extendContract(uint64 timeToAdd) public onlyOwner {
+    function extendContract(
+        uint64 timeToAdd
+    ) 
+        public 
+        onlyOwner
+    {
         contractTime = safeAdd(contractTime, timeToAdd);
     }
     
-    function returnToOwner() public payable onlyOwner expiredContract {
+    function returnToOwner() 
+        public 
+        payable 
+        onlyOwner 
+        expiredContract 
+    {
         selfdestruct(owner);
+    }
+    
+    function giveAllToPayee()
+        public
+        payable
+        onlyOwner
+        expiredContract
+    {
+        selfdestruct(payee);
     }
 
     function ecrecovery(

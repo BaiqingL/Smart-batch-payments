@@ -23,6 +23,8 @@ For the payee, they can at any time submit one of these signed numbers and recie
   * This function can be invoked by the payee, it will take the owner's signed payment agreement and process it accordingly
 * returnToOwner [Owner after contractTime expires]
   * This function will return all funds to the owner of the contract if the contract has expired
+* giveAllToPayee [Owner after contractTime expires]
+  * This function will give all funds to the employee after the contract has expired
 * setPayee [Owner]
   * This function allows the owner to set who is the payee of the contract
 * updatePayAmount [Owner]

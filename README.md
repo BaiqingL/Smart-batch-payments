@@ -1,6 +1,6 @@
 # Solidity payment channel
 A simple payment channel that supports multiple deposits, extend contract time and dynamically change the payment size.
-Contract live on ropsten at https://ropsten.etherscan.io/address/0x9198d40505843931bc8ffc4e5599f05bb0e21709
+Contract live on kovan at https://kovan.etherscan.io/address/0xa1cfe0c85d7e89221d1b870de107ba15cd3d9c11
 
 # Usage
 1. The owner will first deploy the contract, and send ether to the contract to be locked up for a year on default.

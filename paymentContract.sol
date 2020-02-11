@@ -182,7 +182,7 @@ contract paymentChannel{
         pure
         returns (bytes32)
     {
-        return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", (bytes(_msg).length), _msg));
+        return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", uintToString(bytes(_msg).length), _msg));
     }
 
     function ecverify(

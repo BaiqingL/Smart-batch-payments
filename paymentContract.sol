@@ -156,40 +156,23 @@ contract paymentChannel{
     }
     
     function uintToString(
-        uint v
+        uint _base
     )
-        pure
         internal
-        returns (string memory)
+        pure
+        returns (string memory) 
     {
-        uint w = v;
-        bytes32 x;
-        if (v == 0) {
-            x = "0";
-        } else {
-            while (w > 0) {
-                x = bytes32(uint(x) / (2 ** 8));
-                x |= bytes32(((w % 10) + 48) * 2 ** (8 * 31));
-                w /= 10;
-            }
+        bytes memory _tmp = new bytes(32);
+        uint i;
+        for(i = 0;_base > 0;i++) {
+            _tmp[i] = byte(uint8((_base % 10) + 48));
+            _base /= 10;
         }
-
-        bytes memory bytesString = new bytes(32);
-        uint charCount = 0;
-        for (uint j = 0; j < 32; j++) {
-            byte char = byte(bytes32(uint(x) * 2 ** (8 * j)));
-            if (char != 0) {
-                bytesString[charCount] = char;
-                charCount++;
-            }
+        bytes memory _real = new bytes(i--);
+        for(uint j = 0; j < _real.length; j++) {
+            _real[j] = _tmp[i--];
         }
-
-        bytes memory resultBytes = new bytes(charCount);
-        uint j = 0;
-        for (j = 0; j < charCount; j++) {
-            resultBytes[j] = bytesString[j];
-        }
-        return string(resultBytes);
+        return string(_real);
     }
 
     function hash_msg(
@@ -199,7 +182,7 @@ contract paymentChannel{
         pure
         returns (bytes32)
     {
-        return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", uintToString(bytes(_msg).length), _msg));
+        return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n", (bytes(_msg).length), _msg));
     }
 
     function ecverify(

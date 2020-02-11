@@ -12,13 +12,13 @@ contract paymentChannel{
     address payable payee;
     uint64 public contractTime;
     uint256 amountToPay;
-    uint256 amountPaid;
+    uint256 nonce;
     uint256 public payAmount;
     
     constructor() public {
         owner = msg.sender;
         payee = msg.sender;
-        amountPaid = 0;
+        nonce = 0;
         payAmount = 10000000000000000; // 0.01 ETH per payment interval
         contractTime = uint64(block.timestamp) + 31556926; // 1 year contract time
     }
@@ -55,6 +55,27 @@ contract paymentChannel{
         return c;
     }
     
+    function safeSub(uint256 a, uint256 b) internal pure returns (uint256) {
+        require(b <= a, "SafeMath: subtraction overflow");
+        uint256 c = a - b;
+
+        return c;
+    }
+    
+    function safeMul(uint256 a, uint256 b) internal pure returns (uint256) {
+        // Gas optimization: this is cheaper than requiring 'a' not being zero, but the
+        // benefit is lost if 'b' is also tested.
+        // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522
+        if (a == 0) {
+            return 0;
+        }
+
+        uint256 c = a * b;
+        require(c / a == b, "SafeMath: multiplication overflow");
+
+        return c;
+    }
+    
     function getBalance() public view returns(uint256){
         return address(this).balance;
     }
@@ -77,9 +98,9 @@ contract paymentChannel{
         onlyPayee
     {
         require (ecverify(pay, sig) == true);
-        amountToPay = pay * payAmount - amountPaid;
+        amountToPay = safeSub(pay * payAmount, safeMul(nonce , payAmount));
         payee.transfer(amountToPay);
-        amountPaid += amountToPay;
+        nonce += pay;
     }
 
     function updatePayAmount(
@@ -190,10 +211,10 @@ contract paymentChannel{
         bytes memory sig
     )
         internal
+        view
         returns (bool) 
     {
         if (owner == ecrecovery(hash_msg(uintToString(_msg)), sig)){
-            amountPaid += _msg;
             return true;
         } else {
             return false;
